@@ -1,6 +1,10 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - index.qmd
+    - Produccion_cientifica_mc.qmd
+    - Produccion_cientifica_mt.qmd
 
 website:
   title: "Reportes del Observatorio"
@@ -11,6 +15,8 @@ website:
         href: index.qmd
       - text: "Reporte Produccion Medicina Complementaria"
         href: Produccion_cientifica_mc.qmd
+      - text: "Reporte Produccion Medicina Tradicional"            # <--- AGREGA ESTO
+        href: Produccion_cientifica_mt.qmd
 
 format:
   html:

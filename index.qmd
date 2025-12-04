@@ -13,9 +13,10 @@ Bienvenido al repositorio de reportes dinámicos del Observatorio. Aquí encontr
 **Fecha:** Diciembre 2025 **Datos:** Scopus (General) Un análisis completo de la producción científica global en Medicina Complementaria, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.
 :::
 
-::: g-col-6
-### 🌎 \[Próximamente: Analisis Bibliométrico Medicina Tradicional\]
-
-**Fecha:** Diciembre 2025 **Datos:** Scopus Análisis enfocado en Medicina Tradicional.
+::: {.g-col-6}
+### 🧪 [Producción Científica Medicina Tradicional](Produccion_cientifica_mt.html)
+**Fecha:** Diciembre 2025
+**Datos:** Scopus 
+Un análisis completo de la producción científica global en Medicina Tradicional, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.
 :::
 :::::
