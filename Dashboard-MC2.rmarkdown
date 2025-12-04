@@ -1,0 +1,239 @@
+---
+title: "Dashboard Bibliométrico (Enfoque Tidy)"
+format: 
+  dashboard:
+    orientation: columns
+    theme: flatly
+footer: "Fuente: Scopus CSV | Fecha: 03-Diciembre-2025"
+---
+
+```{r setup, include=FALSE}
+# --- 1. LIBRERIAS ---
+library(tidyverse)
+library(janitor)      # Para limpiar nombres de columnas
+library(lubridate)    # Para fechas
+library(plotly)       # Graficos interactivos
+library(DT)           # Tablas
+library(wordcloud2)   # Nube de palabras
+library(widyr)        # Para correlaciones y redes (pairwise)
+library(tidygraph)    # Para manipular redes
+library(ggraph)       # Para visualizar redes
+library(countrycode)  # Para normalizar paises
+
+
+
+# --- 2. CARGA DE DATOS ---
+# IMPORTANTE: Reemplaza "scopus.csv" con tu archivo real.
+
+scopus_raw <- read_csv("scopus3.csv") 
+
+
+
+
+
+# --- SIMULACION DE DATOS SCOPUS (Para que el codigo funcione al copiarlo) ---
+# Creo un dataframe falso con la estructura típica de Scopus
+scopus_raw2 <- tibble(
+  `Source title` = sample(c("Journal of Science", "Health Data", "Tech Review"), 100, replace = T),
+  `Year` = sample(2018:2024, 100, replace = T),
+  `Document Type` = sample(c("Article", "Review", "Conference Paper"), 100, replace = T),
+  `Authors` = sample(c("Smith, J.; Doe, A.", "Garcia, M.", "Lee, K.; Smith, J.; Chen, Y."), 100, replace = T),
+  `Author Keywords` = sample(c("AI; big data", "health; medicine", "AI; machine learning; python"), 100, replace = T),
+  `Affiliations` = sample(c("Univ A, USA; Univ B, UK", "Univ C, Peru", "Univ D, Spain"), 100, replace = T),
+  `Funding Details` = sample(c("Grant A", NA, "NIH"), 100, replace = T),
+  `Language of Original Document` = sample(c("English", "Spanish", "English"), 100, replace = T)
+)
+
+
+
+
+
+# --- 3. LIMPIEZA Y PROCESAMIENTO (LA MAGIA "TIDY") ---
+
+# A. Limpieza de nombres de columnas
+data <- scopus_raw %>% 
+  clean_names() # Convierte "Source title" en "source_title", etc.
+
+# B. Analisis Temporal (Tendencia)
+trend_data <- data %>%
+  filter(year<2026) %>%
+  count(year) %>%
+  arrange(year) %>%
+  mutate(
+    growth = (n - lag(n)) / lag(n) * 100,
+    growth_label = paste0(round(growth, 1), "%")
+  )
+
+
+
+
+
+# C. Desglosando Autores (Separar filas por ; )
+authors_df <- data %>%
+  select(year, authors) %>%
+  separate_rows(authors, sep = ";") %>%
+  mutate(authors = str_trim(authors)) %>%
+  filter(authors != "")
+
+# D. Desglosando Palabras Clave
+keywords_df <- data %>%
+  select(author_keywords) %>%
+  drop_na() %>%
+  separate_rows(author_keywords, sep = ";") %>%
+  mutate(word = str_trim(str_to_lower(author_keywords))) %>%
+  count(word, sort = TRUE)
+
+# E. Extraccion de Paises (Desde Afiliaciones)
+# Truco: Extraemos la última palabra de la afiliación o buscamos match con lista de paises
+extract_country <- function(affil_string) {
+  if(is.na(affil_string)) return(NA)
+  # Busca nombres de paises en el string
+  matches <- str_extract_all(affil_string, paste(countrycode::codelist$country.name.en, collapse = "|"))[[1]]
+  if(length(matches) > 0) return(unique(matches)) else return(NA)
+}
+
+
+
+
+
+
+# Nota: Esto puede tardar si son miles de registros. Simplificamos para el ejemplo.
+countries_df <- data %>%
+  select(affiliations) %>%
+  drop_na() %>%
+  mutate(country = map(affiliations, ~ tryCatch(extract_country(.), error = function(e) NA))) %>%
+  unnest(country) %>%
+  count(country, sort = TRUE)
+
+# F. Colaboración Internacional
+# Si una fila tiene >1 país distinto detectado en afiliaciones
+collab_status <- data %>%
+  mutate(
+    detected_countries = map(affiliations, ~ tryCatch(length(extract_country(.)), error = function(e) 0)),
+    collab_type = if_else(detected_countries > 1, "Internacional", "Nacional")
+  ) %>%
+  count(collab_type)
+
+
+
+# --- 4. CREACION DE REDES (Manual) ---
+# Red de co-autoria: Pares de autores que aparecen en el mismo documento
+# Necesitamos un ID único por documento. Usamos row_number si no hay EID.
+author_network_df <- data %>%
+  mutate(doc_id = row_number()) %>%
+  select(doc_id, authors) %>%
+  separate_rows(authors, sep = ";") %>%
+  mutate(authors = str_trim(authors))
+
+# Usamos widyr para contar pares
+co_author_edges <- author_network_df %>%
+  pairwise_count(authors, doc_id, sort = TRUE, upper = FALSE) %>%
+  filter(n >= 1) # Filtrar colaboraciones minimas (ajustar segun volumen)
+
+# Crear objeto grafo
+graph_authors <- as_tbl_graph(co_author_edges) %>%
+  activate(nodes) %>%
+  mutate(degree = centrality_degree()) %>%
+  arrange(desc(degree)) %>%
+  filter(degree > 0) # Top nodos
+
+```
+
+# Resumen
+
+## Column {width="25%"}
+
+### Row {height="30%"}
+
+::: {.valuebox icon="database" color="primary"}
+Registros Totales `r .QuartoInlineRender(nrow(data))`
+:::
+
+::: {.valuebox icon="calendar-check" color="info"}
+Años Cubiertos `r .QuartoInlineRender(paste(min(data$year), "-", max(data$year)))`
+:::
+
+### Row {height="70%"}
+
+::: {.card title="Metodología Tidy"}
+Este reporte utiliza metodología de *parsing* directo de cadenas de texto.
+
+**Procesamiento:** 1. **Limpieza:** Se usó `janitor` para estandarizar variables. 2. **Extracción:** Las celdas con múltiples valores (Autores, Afiliaciones) se separaron usando `separate_rows` de `tidyr`. 3. **Redes:** Se construyeron matrices de adyacencia usando `widyr::pairwise_count`.
+
+**Acceso a datos:** La tabla cruda se encuentra disponible en la pestaña "Datos".
+:::
+
+## Column {width="75%"}
+
+### Row {height="60%"}
+
+```{r title="Tendencia de Producción (con Variación Anual)"}
+# Grafico combinado: Barras (N) + Linea (Variacion)
+# Usamos dos ejes y en plotly es un poco complejo, asi que hacemos un grafico facetado o interactivo simple con tooltip
+p_trend <- ggplot(trend_data, aes(x = year, y = n)) +
+  geom_col(fill = "#2c3e50", alpha = 0.8) +
+  geom_line(aes(y = n), color = "#e74c3c", size = 1) +
+  geom_point(aes(text = paste("Año:", year, "<br>Docs:", n, "<br>Crecimiento:", growth_label)), color = "#e74c3c") +
+  theme_minimal() +
+  labs(x = "Año", y = "Producción")
+
+ggplotly(p_trend, tooltip = "text")
+```
+
+### Row {height="40%"}
+
+```{r title="Tipos de Documento y Fuentes"}
+p_source <- data %>%
+  count(source_title) %>%
+  slice_max(n, n = 10) %>%
+  ggplot(aes(x = reorder(source_title, n), y = n)) +
+  geom_col(fill = "#18bc9c") +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = "", y = "Documentos")
+
+ggplotly(p_source)
+```
+
+# Redes y Colaboración
+
+## Column {width="60%"}
+
+```{r title="Red de Co-autoría (Fruchterman-Reingold)"}
+# Visualizacion estatica con ggraph (mas control estetico que visNetwork a veces)
+# Para interactivo, podrias pasar 'co_author_edges' a visNetwork igual que antes.
+set.seed(123)
+ggraph(graph_authors, layout = "fr") +
+  geom_edge_link(aes(width = n), alpha = 0.2, color = "grey50") +
+  geom_node_point(aes(size = degree, color = degree)) +
+  geom_node_text(aes(label = name), repel = TRUE, size = 3) +
+  scale_color_viridis_c() +
+  theme_void()
+```
+
+## Column {width="40%"}
+
+### Row {height="50%"}
+
+```{r title="Colaboración Internacional vs Nacional"}
+plot_ly(collab_status, labels = ~collab_type, values = ~n, type = 'pie',
+        textposition = 'inside',
+        textinfo = 'label+percent',
+        insidetextfont = list(color = '#FFFFFF'),
+        marker = list(colors = c('#3498db', '#e74c3c')))
+```
+
+### Row {height="50%"}
+
+```{r title="Nube de Keywords"}
+wordcloud2(data = keywords_df[1:50, ], size = 0.5)
+```
+
+# Datos
+
+```{r}
+datatable(data %>% select(year, authors, source_title, document_type),
+          options = list(pageLength = 10, dom = 'Bfrtip', buttons = c('csv')),
+          extensions = 'Buttons')
+```
+

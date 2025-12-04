@@ -1,0 +1,19 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Reportes del Observatorio"
+  navbar:
+    background: primary
+    left:
+      - text: "Inicio"
+        href: index.qmd
+      - text: "Reporte Produccion Medicina Complementaria"
+        href: Produccion_cientifica_mc.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true

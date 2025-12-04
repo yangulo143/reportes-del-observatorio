@@ -1,0 +1,21 @@
+---
+title: "Reportes para sala situacional y publicacion cientifica-Observatorio de Salud Intercultural"
+---
+
+Bienvenido al repositorio de reportes dinámicos del Observatorio. Aquí encontrará análisis actualizados sobre producción científica, bibliometría y tendencias de investigación.
+
+### Reportes Disponibles
+
+::::: grid
+::: g-col-6
+### 📊 [Análisis Bibliométrico Medicina Complementaria](Produccion_cientifica_mc.html)
+
+**Fecha:** Diciembre 2025 **Datos:** Scopus (General) Un análisis completo de la producción científica global en Medicina Complementaria, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.
+:::
+
+::: g-col-6
+### 🌎 \[Próximamente: Analisis Bibliométrico Medicina Tradicional\]
+
+**Fecha:** Diciembre 2025 **Datos:** Scopus Análisis enfocado en Medicina Tradicional.
+:::
+:::::

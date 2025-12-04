@@ -1,0 +1,115 @@
+"0","#options(width=160)"
+"0","results <- biblioAnalysis(M)"
+"0","summary(results, k=10, pause=F, width=130)"
+"1","
+
+MAIN INFORMATION ABOUT DATA
+
+"
+"1"," "
+"1","Timespan                              2000 : 2026 
+"
+"1"," "
+"1","Sources (Journals, Books, etc)        489 
+"
+"1"," "
+"1","Documents                             1103 
+"
+"1"," "
+"1","Annual Growth Rate %                  -7.69 
+"
+"1"," "
+"1","Document Average Age                  5.8 
+"
+"1"," "
+"1","Average citations per doc             14.92 
+"
+"1"," "
+"1","Average citations per year per doc    1.945 
+"
+"1"," "
+"1","References                            1 
+"
+"1"," "
+"1","
+DOCUMENT TYPES                     
+"
+"1"," "
+"1","article               900 
+"
+"1"," "
+"1","book                  2 
+"
+"1"," "
+"1","book chapter          22 
+"
+"1"," "
+"1","conference paper      40 
+"
+"1"," "
+"1","data paper            1 
+"
+"1"," "
+"1","editorial             4 
+"
+"1"," "
+"1","erratum               1 
+"
+"1"," "
+"1","letter                22 
+"
+"1"," "
+"1","note                  7 
+"
+"1"," "
+"1","retracted             1 
+"
+"1"," "
+"1","review                103 
+"
+"1"," "
+"1","
+DOCUMENT CONTENTS
+"
+"1"," "
+"1","Keywords Plus (ID)                    8914 
+"
+"1"," "
+"1","Author's Keywords (DE)                3236 
+"
+"1"," "
+"1","
+AUTHORS
+"
+"1"," "
+"1","Authors                               4846 
+"
+"1"," "
+"1","Author Appearances                    6901 
+"
+"1"," "
+"1","Authors of single-authored docs       34 
+"
+"1"," "
+"1","
+AUTHORS COLLABORATION
+"
+"1"," "
+"1","Single-authored docs                  46 
+"
+"1"," "
+"1","Documents per Author                  0.228 
+"
+"1"," "
+"1","Co-Authors per Doc                    6.26 
+"
+"1"," "
+"1","International co-authorships %        49.32 
+"
+"1"," "
+"1","
+"
+"1","
+Annual Scientific Production
+
+"

@@ -1,0 +1,190 @@
+---
+title: "Dashboard Bibliométrico: Producción Científica"
+format: 
+  dashboard:
+    orientation: columns
+    theme: cosmo
+    nav-buttons: [github]
+logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python_icon_and_wordmark.svg/1200px-Python_icon_and_wordmark.svg.png" # Puedes poner tu logo aqui
+footer: "Fuente: Base de datos Scopus | Fecha de búsqueda: 03-Diciembre-2025"
+---
+
+```{r setup, include=FALSE}
+# --- 1. CARGA DE LIBRERIAS Y DATOS ---
+
+library(bibliometrix)
+library(tidyverse)
+library(plotly)
+library(DT)
+library(visNetwork)
+library(countrycode)
+library(wordcloud2)
+```
+
+
+```{r setup, include=FALSE}
+
+
+# SIMULACION DE DATOS (Para que el codigo funcione al copiarlo)
+# En tu caso, reemplaza esta linea por: 
+
+M <- bibliometrix::convert2df("scopus3.csv", dbsource = "scopus", format = "csv")
+
+data(scientometrics, package = "bibliometrixData")
+M <- scientometrics
+
+# ANALISIS BASICO CON BIBLIOMETRIX
+results <- biblioAnalysis(M, sep = ";")
+S <- summary(object = results, k = 10, pause = FALSE)
+
+# --- PRE-PROCESAMIENTO PARA GRAFICOS CUSTOMIZADOS ---
+
+# 1. Tendencia Anual
+annual_prod <- data.frame(Year = as.numeric(rownames(S$MainInformation$AnnualProduction)),
+                          Articles = S$MainInformation$AnnualProduction)
+names(annual_prod) <- c("Year", "Articles")
+
+# Calculo de Variación (Tasa de crecimiento anual compuesta - CAGR aproximada o crecimiento ultimo año)
+last_year <- max(annual_prod$Year)
+growth_rate <- results$AnnualGrowthRate
+
+# 2. Paises (Top 10)
+country_prod <- data.frame(Country = rownames(S$MostProdCountries), 
+                           Articles = S$MostProdCountries[,1]) %>%
+  slice(1:10)
+
+# 3. Revistas
+sources <- data.frame(Source = rownames(S$MostRelSources), 
+                      Articles = S$MostRelSources[,1]) %>%
+  slice(1:10)
+
+# 4. Palabras clave
+keywords <- data.frame(Word = rownames(S$MostRelKeywords), 
+                       Freq = S$MostRelKeywords[,1])
+
+# 5. Colaboración Internacional (MCP vs SCP)
+# MCP: Multiple Country Publication, SCP: Single Country Publication
+collab_data <- data.frame(Country = rownames(S$MostProdCountries),
+                          SCP = S$MostProdCountries[,3],
+                          MCP = S$MostProdCountries[,4]) %>%
+  pivot_longer(cols = c("SCP", "MCP"), names_to = "Type", values_to = "Count") %>%
+  filter(Country %in% country_prod$Country)
+
+```
+
+# Resumen General
+
+## Column {width=25%}
+
+### Row {height=30%}
+
+::: {.valuebox icon="file-text" color="primary"}
+Registros Totales
+`{r} results$Articles`
+:::
+
+::: {.valuebox icon="graph-up" color="success"}
+Tasa de Crecimiento Anual
+`{r} paste0(round(growth_rate, 2), "%")`
+:::
+
+### Row {height=70%}
+
+::: {.card title="Metodología"}
+Este dashboard presenta un análisis bibliométrico descriptivo basado en datos extraídos de **Scopus**.
+
+**Proceso:**
+1.  **Limpieza:** Normalización de metadatos bibliográficos mediante `bibliometrix`.
+2.  **Indicadores:** Se calcularon frecuencias de producción, impacto y colaboración.
+3.  **Herramientas:** Análisis realizado en R (v4.3) utilizando el paquete `bibliometrix` y visualizado con `Quarto`.
+
+*Nota: Los datos de citación reflejan el estado al momento de la descarga.*
+:::
+
+## Column {width=75%}
+
+### Row {height=60%}
+
+```{r title="Tendencia de Producción Científica por Año"}
+# Grafico Customizado con GGPLOT2 + PLOTLY
+p1 <- ggplot(annual_prod, aes(x = Year, y = Articles)) +
+  geom_line(color = "#2c3e50", size = 1) +
+  geom_point(color = "#e74c3c", size = 2) +
+  geom_area(fill = "#2c3e50", alpha = 0.1) +
+  theme_minimal() +
+  labs(x = "Año", y = "Número de Documentos")
+
+ggplotly(p1)
+```
+
+### Row {height=40%}
+
+```{r title="Top 10 Revistas Más Productivas"}
+p2 <- ggplot(sources, aes(x = reorder(Source, Articles), y = Articles)) +
+  geom_col(fill = "#3498db") +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = "", y = "Documentos")
+
+ggplotly(p2)
+```
+
+# Colaboración y Redes
+
+## Column {width=50%}
+
+### Row {height=50%}
+
+```{r title="Colaboración Internacional (Top Países)"}
+# Grafico de Barras Apiladas (Custom)
+p3 <- ggplot(collab_data, aes(x = reorder(Country, Count), y = Count, fill = Type)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("MCP" = "#e74c3c", "SCP" = "#95a5a6"), 
+                    labels = c("Colab. Internacional", "Doméstica")) +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = "", y = "Documentos", fill = "Tipo de Colab.")
+
+ggplotly(p3)
+```
+
+### Row {height=50%}
+
+```{r title="Nube de Palabras Clave"}
+# Nube de palabras interactiva
+wordcloud2(data = keywords[1:50,], size = 0.5, color = "random-dark")
+```
+
+## Column {width=50%}
+
+```{r title="Red de Co-autoría (Instituciones)"}
+# CREACION DE RED
+# Usamos bibliometrix para crear la matriz, pero visNetwork para graficar
+NetMatrix <- biblioNetwork(M, analysis = "collaboration", network = "universities", sep = ";")
+
+# Reducimos la red para que sea visible (Top 30 nodos)
+g <- networkPlot(NetMatrix, n = 30, Title = "Colaboración", type = "fruchterman", size=T, remove.multiple=F, labelsize=0.7, edgesize = 5, edges.min = 1)
+
+# Convertimos a visNetwork (Interactive)
+# Nota: biblioNetwork devuelve un objeto igraph que visNetwork puede leer
+nodes <- data.frame(id = V(g$graph)$name, 
+                    label = V(g$graph)$name, 
+                    value = V(g$graph)$size) # Tamaño basado en grado/importancia
+edges <- as_data_frame(g$graph, what="edges")
+
+visNetwork(nodes, edges) %>%
+  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
+  visPhysics(stabilization = FALSE)
+```
+
+# Datos Crudos
+
+```{r}
+# Tabla interactiva con descarga
+datatable(M %>% select(AU, TI, SO, PY, DT, TC), 
+          rownames = FALSE,
+          options = list(pageLength = 10, dom = 'Bfrtip', buttons = c('csv', 'excel')),
+          extensions = 'Buttons',
+          colnames = c("Autores", "Título", "Revista", "Año", "Tipo", "Citas"))
+```--
+

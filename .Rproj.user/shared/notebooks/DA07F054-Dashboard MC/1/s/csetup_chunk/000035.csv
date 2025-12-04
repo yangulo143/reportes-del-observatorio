@@ -1,0 +1,139 @@
+"0",""
+"0",""
+"0","# SIMULACION DE DATOS (Para que el codigo funcione al copiarlo)"
+"0","# En tu caso, reemplaza esta linea por: "
+"0",""
+"0","M <- bibliometrix::convert2df(""scopusmc.bib"", dbsource = ""scopus"", format = ""bibtex"")"
+"1","
+Converting your"
+"1"," "
+"1","scopus"
+"1"," "
+"1","collection into a bibliographic dataframe
+
+"
+"1","
+Warning:
+In your file, some mandatory metadata are missing. Bibliometrix functions may not work properly!
+
+Please, take a look at the vignettes:
+- 'Data Importing and Converting' (https://www.bibliometrix.org/vignettes/Data-Importing-and-Converting.html)
+- 'A brief introduction to bibliometrix' (https://www.bibliometrix.org/vignettes/Introduction_to_bibliometrix.html)
+
+"
+"1","
+Missing fields: "
+"1"," "
+"1","CR"
+"1"," "
+"1","
+"
+"1","Done!
+
+"
+"1","
+Generating affiliation field tag AU_UN from C1:  "
+"1","Done!
+
+"
+"1","
+Removed "
+"1"," "
+"1","6"
+"1"," "
+"1","duplicated documents
+"
+"0","data(scientometrics, package = ""bibliometrixData"")"
+"0","M <- scientometrics"
+"0",""
+"0","# ANALISIS BASICO CON BIBLIOMETRIX"
+"0","results <- biblioAnalysis(M, sep = "";"")"
+"0","S <- summary(object = results, k = 10, pause = FALSE)"
+"1","
+
+MAIN INFORMATION ABOUT DATA
+
+"
+"1"," "
+"1","Timespan                              1985 : 2015 
+"
+"1"," "
+"1","Sources (Journals, Books, etc)        1 
+"
+"1"," "
+"1","Documents                             147 
+"
+"1"," "
+"1","Annual Growth Rate %                  8.64 
+"
+"1"," "
+"1","Document Average Age                  17.1 
+"
+"1"," "
+"1","Average citations per doc             14.81 
+"
+"1"," "
+"1","Average citations per year per doc    0.6885 
+"
+"1"," "
+"1","References                            4444 
+"
+"1"," "
+"1","
+DOCUMENT TYPES                     
+"
+"1"," "
+"1","article                         125 
+"
+"1"," "
+"1","article; proceedings paper      19 
+"
+"1"," "
+"1","review                          3 
+"
+"1"," "
+"1","
+DOCUMENT CONTENTS
+"
+"1"," "
+"1","Keywords Plus (ID)                    392 
+"
+"1"," "
+"1","Author's Keywords (DE)                342 
+"
+"1"," "
+"1","
+AUTHORS
+"
+"1"," "
+"1","Authors                               269 
+"
+"1"," "
+"1","Author Appearances                    337 
+"
+"1"," "
+"1","Authors of single-authored docs       32 
+"
+"1"," "
+"1","
+AUTHORS COLLABORATION
+"
+"1"," "
+"1","Single-authored docs                  38 
+"
+"1"," "
+"1","Documents per Author                  0.546 
+"
+"1"," "
+"1","Co-Authors per Doc                    2.29 
+"
+"1"," "
+"1","International co-authorships %        23.13 
+"
+"1"," "
+"1","
+"
+"1","
+Annual Scientific Production
+
+"

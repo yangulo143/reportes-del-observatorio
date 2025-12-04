@@ -1,0 +1,10 @@
+"1","
+"
+"0","# --- PRE-PROCESAMIENTO PARA GRAFICOS CUSTOMIZADOS ---"
+"0",""
+"0","# 1. Tendencia Anual"
+"0","annual_prod <- data.frame(Year = as.numeric(rownames(S$MainInformation$AnnualProduction)),"
+"0","                          Articles = S$MainInformation$AnnualProduction)"
+"2","Error en S$MainInformation$AnnualProduction: 
+  $ operator is invalid for atomic vectors
+"
