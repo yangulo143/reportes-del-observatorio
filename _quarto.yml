@@ -6,6 +6,7 @@ project:
     - Produccion_cientifica_mc.qmd
     - Produccion_cientifica_mt.qmd
     - Produccion_cientifica_interculturalidad.qmd
+    - Produccion_cientifica_determinantes.qmd
 
 website:
   title: "Reportes del Observatorio"
@@ -20,6 +21,9 @@ website:
         href: Produccion_cientifica_mt.qmd
       - text: "Reporte Produccion Interculturalidad en salud"            # <--- AGREGA ESTO
         href: Produccion_cientifica_interculturalidad.qmd
+      - text: "Reporte Produccion Investigación Social"            # <--- AGREGA ESTO
+        href: Produccion_cientifica_determinantes.qmd
+
 
 format:
   html:

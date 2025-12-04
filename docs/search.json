@@ -1,24 +1,52 @@
 [
   {
-    "objectID": "Produccion_cientifica_interculturalidad.html",
-    "href": "Produccion_cientifica_interculturalidad.html",
+    "objectID": "Produccion_cientifica_determinantes.html",
+    "href": "Produccion_cientifica_determinantes.html",
     "title": "Informe Bibliométrico de Producción Científica",
     "section": "",
-    "text": "Note\n\n\n\nInformación: Todos los gráficos presentados a continuación incluyen una pestaña “Datos Fuente” donde podrá descargar la información en formato Excel.\n\n\nEste informe analiza un total de 48 documentos científicos publicados hasta el año 2025, que abarcan temas de interculturalidad en salud y son publicados por al menos un autor que tiene filiación en Perú.\nEstrategia de búsqueda basada parcialmente en la siguiente publicación:\nOrganización Panaméricana de la Salud (OPS). Informe Técnico. Mapa de evidencias sobre interculturalidad en salud. 2025. Bogotá: OPS. 106 pp. Disponible en: https://docs.bvsalud.org/biblioref/2025/07/1610119/mapa-de-evidencias-2025-final.pdf"
+    "text": "Note\n\n\n\nInformación: Todos los gráficos presentados a continuación incluyen una pestaña “Datos Fuente” donde podrá descargar la información en formato Excel.\n\n\nEste informe analiza un total de 1234 documentos científicos publicados hasta el año 2025, que abarcan aspectos sobre determinantes sociales de la salud y son publicados por al menos un autor que tiene filiación en Perú.\nLa estrategia incluye el analisis de los siguientes conceptos: Inequidades en salud, determinantes sociales de las salud, disparidades sociales, económicas, y factores socioeconomicos asociados a la salud."
   },
   {
-    "objectID": "Produccion_cientifica_interculturalidad.html#top-revistas-de-publicación",
-    "href": "Produccion_cientifica_interculturalidad.html#top-revistas-de-publicación",
+    "objectID": "Produccion_cientifica_determinantes.html#top-revistas-de-publicación",
+    "href": "Produccion_cientifica_determinantes.html#top-revistas-de-publicación",
     "title": "Informe Bibliométrico de Producción Científica",
     "section": "4.1 Top Revistas de Publicación",
     "text": "4.1 Top Revistas de Publicación\n\nGráficoDatos Fuente\n\n\n\n\n\n\n\n\n\n\nFigure 3"
   },
   {
-    "objectID": "Produccion_cientifica_interculturalidad.html#distribución-por-tipo-de-documento",
-    "href": "Produccion_cientifica_interculturalidad.html#distribución-por-tipo-de-documento",
+    "objectID": "Produccion_cientifica_determinantes.html#distribución-por-tipo-de-documento",
+    "href": "Produccion_cientifica_determinantes.html#distribución-por-tipo-de-documento",
     "title": "Informe Bibliométrico de Producción Científica",
     "section": "4.2 Distribución por Tipo de Documento",
     "text": "4.2 Distribución por Tipo de Documento\n\nGráficoDatos Fuente\n\n\n\n\n\n\n\n\n\n\nFigure 4"
+  },
+  {
+    "objectID": "Produccion_cientifica_mt.html",
+    "href": "Produccion_cientifica_mt.html",
+    "title": "Informe Bibliométrico de Producción Científica",
+    "section": "",
+    "text": "Note\n\n\n\nInformación: Todos los gráficos presentados a continuación incluyen una pestaña “Datos Fuente” donde podrá descargar la información en formato Excel.\n\n\nEste informe analiza un total de 241 documentos científicos publicados hasta el año 2025, que abarcan temas de medicina tradicional y son publicados por al menos un autor que tiene filiación en Perú."
+  },
+  {
+    "objectID": "Produccion_cientifica_mt.html#top-revistas-de-publicación",
+    "href": "Produccion_cientifica_mt.html#top-revistas-de-publicación",
+    "title": "Informe Bibliométrico de Producción Científica",
+    "section": "4.1 Top Revistas de Publicación",
+    "text": "4.1 Top Revistas de Publicación\n\nGráficoDatos Fuente\n\n\n\n\n\n\n\n\n\n\nFigure 3"
+  },
+  {
+    "objectID": "Produccion_cientifica_mt.html#distribución-por-tipo-de-documento",
+    "href": "Produccion_cientifica_mt.html#distribución-por-tipo-de-documento",
+    "title": "Informe Bibliométrico de Producción Científica",
+    "section": "4.2 Distribución por Tipo de Documento",
+    "text": "4.2 Distribución por Tipo de Documento\n\nGráficoDatos Fuente\n\n\n\n\n\n\n\n\n\n\nFigure 4"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Reportes para sala situacional y publicacion cientifica-Observatorio de Salud Intercultural",
+    "section": "",
+    "text": "Bienvenido al repositorio de reportes dinámicos del Observatorio. Aquí encontrará análisis actualizados sobre producción científica, bibliometría y tendencias de investigación.\n\nReportes Disponibles\n\n\n\n📊 Análisis Bibliométrico Medicina Complementaria\nFecha: Diciembre 2025 Datos: Scopus (General) Un análisis completo de la producción científica global en Medicina Complementaria, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.\n\n\n🧪 Producción Científica Medicina Tradicional\nFecha: Diciembre 2025 Datos: Scopus Un análisis completo de la producción científica global en Medicina Tradicional, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.\n\n\n🧪 Producción Científica Interculturalidad en Salud\nFecha: Diciembre 2025 Datos: Scopus Un análisis completo de la producción científica global en interculturalidad en salud, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.\n\n\n🩺 Producción Científica Determinantes sociales de la salud\nFecha: Diciembre 2025 Datos: Scopus Un análisis completo de la producción científica global en determinantes sociales de la salud, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave."
   },
   {
     "objectID": "Produccion_cientifica_mc.html",
@@ -42,29 +70,22 @@
     "text": "4.2 Distribución por Tipo de Documento\n\nGráficoDatos Fuente\n\n\n\n\n\n\n\n\n\n\nFigure 4"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Reportes para sala situacional y publicacion cientifica-Observatorio de Salud Intercultural",
-    "section": "",
-    "text": "Bienvenido al repositorio de reportes dinámicos del Observatorio. Aquí encontrará análisis actualizados sobre producción científica, bibliometría y tendencias de investigación.\n\nReportes Disponibles\n\n\n\n📊 Análisis Bibliométrico Medicina Complementaria\nFecha: Diciembre 2025 Datos: Scopus (General) Un análisis completo de la producción científica global en Medicina Complementaria, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.\n\n\n🧪 Producción Científica Medicina Tradicional\nFecha: Diciembre 2025 Datos: Scopus Un análisis completo de la producción científica global en Medicina Tradicional, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.\n\n\n🧪 Producción Científica Interculturalidad en Salud\nFecha: Diciembre 2025 Datos: Scopus Un análisis completo de la producción científica global en interculturalidad en salud, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave."
-  },
-  {
-    "objectID": "Produccion_cientifica_mt.html",
-    "href": "Produccion_cientifica_mt.html",
+    "objectID": "Produccion_cientifica_interculturalidad.html",
+    "href": "Produccion_cientifica_interculturalidad.html",
     "title": "Informe Bibliométrico de Producción Científica",
     "section": "",
-    "text": "Note\n\n\n\nInformación: Todos los gráficos presentados a continuación incluyen una pestaña “Datos Fuente” donde podrá descargar la información en formato Excel.\n\n\nEste informe analiza un total de 241 documentos científicos publicados hasta el año 2025, que abarcan temas de medicina tradicional y son publicados por al menos un autor que tiene filiación en Perú."
+    "text": "Note\n\n\n\nInformación: Todos los gráficos presentados a continuación incluyen una pestaña “Datos Fuente” donde podrá descargar la información en formato Excel.\n\n\nEste informe analiza un total de 48 documentos científicos publicados hasta el año 2025, que abarcan temas de interculturalidad en salud y son publicados por al menos un autor que tiene filiación en Perú.\nEstrategia de búsqueda basada parcialmente en la siguiente publicación:\nOrganización Panaméricana de la Salud (OPS). Informe Técnico. Mapa de evidencias sobre interculturalidad en salud. 2025. Bogotá: OPS. 106 pp. Disponible en: https://docs.bvsalud.org/biblioref/2025/07/1610119/mapa-de-evidencias-2025-final.pdf"
   },
   {
-    "objectID": "Produccion_cientifica_mt.html#top-revistas-de-publicación",
-    "href": "Produccion_cientifica_mt.html#top-revistas-de-publicación",
+    "objectID": "Produccion_cientifica_interculturalidad.html#top-revistas-de-publicación",
+    "href": "Produccion_cientifica_interculturalidad.html#top-revistas-de-publicación",
     "title": "Informe Bibliométrico de Producción Científica",
     "section": "4.1 Top Revistas de Publicación",
     "text": "4.1 Top Revistas de Publicación\n\nGráficoDatos Fuente\n\n\n\n\n\n\n\n\n\n\nFigure 3"
   },
   {
-    "objectID": "Produccion_cientifica_mt.html#distribución-por-tipo-de-documento",
-    "href": "Produccion_cientifica_mt.html#distribución-por-tipo-de-documento",
+    "objectID": "Produccion_cientifica_interculturalidad.html#distribución-por-tipo-de-documento",
+    "href": "Produccion_cientifica_interculturalidad.html#distribución-por-tipo-de-documento",
     "title": "Informe Bibliométrico de Producción Científica",
     "section": "4.2 Distribución por Tipo de Documento",
     "text": "4.2 Distribución por Tipo de Documento\n\nGráficoDatos Fuente\n\n\n\n\n\n\n\n\n\n\nFigure 4"

@@ -1,7 +1,0 @@
-"0","NetMatrix <- biblioNetwork(M, analysis = ""co-citation"", network = ""references"", sep = "";"")"
-"1","[1]"
-"1"," ""Matrix is empty!!"""
-"1","
-"
-"2","Error en strsplit(LABEL, ""\\. ""): argumento de tipo no-carácter
-"

@@ -26,4 +26,11 @@ Un análisis completo de la producción científica global en Medicina Tradicion
 **Datos:** Scopus 
 Un análisis completo de la producción científica global en interculturalidad en salud, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.
 :::
+
+::: {.g-col-6}
+### 🩺 [Producción Científica Determinantes sociales de la salud](Produccion_cientifica_determinantes.html)
+**Fecha:** Diciembre 2025
+**Datos:** Scopus 
+Un análisis completo de la producción científica global en determinantes sociales de la salud, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.
+:::
 :::::

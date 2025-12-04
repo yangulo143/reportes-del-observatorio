@@ -1,8 +1,0 @@
-"0","plot_ly(collab_status, labels = ~collab_type, values = ~n, type = 'pie',"
-"0","        textposition = 'inside',"
-"0","        textinfo = 'label+percent',"
-"0","        insidetextfont = list(color = '#FFFFFF'),"
-"0","        marker = list(colors = c('#3498db', '#e74c3c')))"
-"2","Error en normalizePath(path.expand(path), winslash, mustWork): 
-  path[1]=""C:/Users/YOL/OneDrive/Observatorio Medicina Tradicional y Medicina Complementaria/Contenidos pagina web/Publicaciones científicas/dashboard/.Rproj.user/shared/notebooks/476D6420-Dashboard MC2/1/C0F2CE1F42419628/cxt9525wye38x_t/lib/htmltools-fill-0.5.8.1"": El sistema no puede encontrar el archivo especificado
-"

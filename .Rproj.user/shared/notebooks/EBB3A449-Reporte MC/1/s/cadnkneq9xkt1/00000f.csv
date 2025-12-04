@@ -1,2 +1,0 @@
-"0","#| label: fig-cloud"
-"0","wordcloud2(keywords_df, size = 0.6, color = ""random-dark"")"
