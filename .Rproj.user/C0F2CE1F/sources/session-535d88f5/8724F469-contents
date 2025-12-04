@@ -5,6 +5,7 @@ project:
     - index.qmd
     - Produccion_cientifica_mc.qmd
     - Produccion_cientifica_mt.qmd
+    - Produccion_cientifica_interculturalidad.qmd
 
 website:
   title: "Reportes del Observatorio"
@@ -17,6 +18,8 @@ website:
         href: Produccion_cientifica_mc.qmd
       - text: "Reporte Produccion Medicina Tradicional"            # <--- AGREGA ESTO
         href: Produccion_cientifica_mt.qmd
+      - text: "Reporte Produccion Interculturalidad en salud"            # <--- AGREGA ESTO
+        href: Produccion_cientifica_interculturalidad.qmd
 
 format:
   html:
