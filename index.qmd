@@ -33,4 +33,25 @@ Un análisis completo de la producción científica global en interculturalidad 
 **Datos:** Scopus 
 Un análisis completo de la producción científica global en determinantes sociales de la salud, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.
 :::
+
+::: {.g-col-6}
+### 💫 [Producción Científica peruana en Etnicidad en Salud](Produccion_cientifica_etnicidad.html)
+**Fecha:** Diciembre 2025
+**Datos:** Scopus 
+Un análisis completo de la producción científica global sobre desenlaces en salud en diferentes grupos étnicos, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.
+:::
+
+::: {.g-col-6}
+### 🍎 [Producción Científica peruana en promoción de estilos de vida saludables](Produccion_cientifica_promocion.html)
+**Fecha:** Diciembre 2025
+**Datos:** Scopus 
+Un análisis completo de la producción científica global sobre la promoción de estilos de vida saludables en población peruana, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.
+:::
+
+::: {.g-col-6}
+### 🩺 [Producción Científica peruana en Acceso a la Salud](Produccion_cientifica_acceso.html)
+**Fecha:** Diciembre 2025
+**Datos:** Scopus 
+Un análisis completo de la producción científica global sobre acceso a la salud en población peruana, incluyendo tendencias temporales, mapas de colaboración y nubes de palabras clave.
+:::
 :::::

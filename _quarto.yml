@@ -7,6 +7,9 @@ project:
     - Produccion_cientifica_mt.qmd
     - Produccion_cientifica_interculturalidad.qmd
     - Produccion_cientifica_determinantes.qmd
+    - Produccion_cientifica_etnicidad.qmd
+    - Produccion_cientifica_promocion.qmd
+    - Produccion_cientifica_acceso.qmd
 
 website:
   title: "Reportes del Observatorio"
@@ -21,8 +24,16 @@ website:
         href: Produccion_cientifica_mt.qmd
       - text: "Reporte Produccion Interculturalidad en salud"            # <--- AGREGA ESTO
         href: Produccion_cientifica_interculturalidad.qmd
-      - text: "Reporte Produccion Investigación Social"            # <--- AGREGA ESTO
-        href: Produccion_cientifica_determinantes.qmd
+      - text: "Reporte Produccion Investigación Social"
+        menu:
+        - text: "Reporte Produccion Determinantes Sociales de la Salud"
+          href: Produccion_cientifica_determinantes.qmd
+        - text: "Reporte Produccion Etnicidad"            # <--- AGREGA ESTO
+          href: Produccion_cientifica_etnicidad.qmd
+        - text: "Reporte Produccion Estilos de vida saludables"            # <--- AGREGA ESTO
+          href: Produccion_cientifica_promocion.qmd
+        - text: "Reporte Produccion Acceso a la salud"            # <--- AGREGA ESTO
+          href: Produccion_cientifica_acceso.qmd
 
 
 format:

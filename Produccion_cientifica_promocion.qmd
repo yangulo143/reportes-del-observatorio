@@ -1,0 +1,343 @@
+---
+title: "Informe Bibliométrico de Producción Científica"
+subtitle: "Análisis Dinámico de Resultados (Scopus)"
+date: last-modified
+author: "Subdirección de Medicina Tradicional, Interculturalidad e Investigación Social (SUMTIS-CENSI) y Subdirección de Medicina Complementaria (SUMEC)"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-title: "Índice"
+    toc-depth: 2
+    number-sections: true
+    code-fold: true
+    self-contained: true
+    page-layout: full
+footer: "Fuente de datos: Scopus | Fecha de búsqueda: 04/12/2025"
+output-dir: docs
+---
+
+```{r setup, include=FALSE}
+# --- 1. CONFIGURACIÓN E INSTALACIÓN DE LIBRERÍAS ---
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+# Carga de paquetes necesarios
+library(tidyverse)    # Manipulación de datos
+library(janitor)      # Limpieza de nombres
+library(lubridate)    # Fechas
+library(plotly)       # Gráficos interactivos
+library(DT)           # Tablas interactivas
+library(wordcloud2)   # Nube de palabras
+library(countrycode)  # Países ISO
+library(stringr)      # Texto
+
+# --- FUNCIÓN AUXILIAR PARA BOTONES DE DESCARGA ---
+make_download_table <- function(data_input, filename_label = "datos") {
+  datatable(
+    data_input,
+    extensions = 'Buttons',
+    rownames = FALSE,
+    options = list(
+      dom = 'Bfrtip',
+      buttons = list(
+        list(extend = 'excel', filename = filename_label, title = filename_label, text = 'Descargar Excel'),
+        list(extend = 'csv', filename = filename_label, text = 'Descargar CSV')
+      ),
+      pageLength = 5,
+      scrollX = TRUE,
+      language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')
+    )
+  )
+}
+```
+
+```{r carga_procesamiento}
+# --- 2. CARGA DE DATOS ---
+
+tryCatch({
+  raw_data <- read_csv("estilos de vida.csv", show_col_types = FALSE)
+}, error = function(e) {
+  stop("No se encontró el archivo 'estilos de vida.csv'. Asegúrate de que esté en la carpeta del proyecto.")
+})
+
+data_clean <- raw_data %>% clean_names()
+
+# --- 3. FILTROS Y TRANSFORMACIÓN ---
+
+# A. Filtro temporal (Hasta 2025)
+data <- data_clean %>%
+  filter(year <= 2025) %>%
+  filter(!is.na(year))
+
+# B. Extracción de Países (Para el Mapa)
+get_countries <- function(text) {
+  if (is.na(text)) return(NA)
+  ref_countries <- countrycode::codelist$country.name.en
+  found <- str_extract_all(text, paste(ref_countries, collapse = "|"))[[1]]
+  if (length(found) == 0) return(NA)
+  iso <- countrycode(unique(found), origin = "country.name", destination = "iso3c", warn = FALSE)
+  return(unique(iso[!is.na(iso)]))
+}
+
+data_processed <- data %>%
+  mutate(
+    countries_iso = map(affiliations, get_countries),
+    n_countries_distinct = map_int(countries_iso, length),
+    collab_type = if_else(n_countries_distinct > 1, "Internacional", "Nacional/Individual")
+  )
+
+# --- 4. PREPARACIÓN DE SUB-DATASETS PARA GRÁFICOS ---
+
+# 4.1. Tendencia
+trend_data <- data_processed %>%
+  count(year) %>%
+  mutate(growth = scales::percent((n - lag(n))/lag(n), accuracy = 0.1))
+
+# 4.2. Mapa
+map_data <- data_processed %>%
+  select(countries_iso) %>%
+  unnest(countries_iso) %>%
+  count(countries_iso, name = "documents") %>%
+  mutate(country_name = countrycode(countries_iso, origin = "iso3c", destination = "country.name")) %>%
+  drop_na()
+
+# 4.3. Revistas (Sin NA)
+source_data <- data_processed %>% 
+  filter(!is.na(source_title)) %>% 
+  count(source_title) %>% 
+  slice_max(n, n = 15)
+
+# 4.4. Tipos de Documento (Traducido)
+type_data <- data_processed %>% 
+  mutate(type_es = case_match(document_type,
+    "Article" ~ "Artículo",
+    "Review" ~ "Revisión",
+    "Conference Paper" ~ "Conferencia",
+    "Conference paper" ~ "Conferencia",
+    "Letter" ~ "Carta al editor",
+    "Book Chapter" ~ "Capítulo de libro",
+    "Book chapter" ~ "Capítulo de libro",
+    "Note" ~ "Nota",
+    "Editorial" ~ "Editorial",
+    "Book" ~ "Libro",
+    "Retracted" ~ "Retractado",
+    "Erratum" ~ "Erratum",
+    "Data Paper" ~ "Repositorio de datos",
+    .default = document_type
+  )) %>%
+  count(type_es)
+
+# 4.5. Palabras Clave
+keywords_df <- data %>%
+  select(author_keywords) %>%
+  drop_na() %>%
+  separate_rows(author_keywords, sep = ";") %>%
+  mutate(word = str_to_lower(str_trim(author_keywords))) %>%
+  count(word, sort = TRUE) %>%
+  slice_head(n = 200)
+
+# 4.6. Colaboración
+collab_data <- data_processed %>% count(collab_type)
+
+# 4.7. Financiamiento (CORREGIDO: Usando funding_texts)
+# Usamos directamente la columna indicada por el usuario
+fund_data <- data_processed %>%
+  mutate(status = if_else(!is.na(funding_texts), "Sí", "No")) %>%
+  count(status)
+
+```
+
+# Resumen Ejecutivo
+
+::: callout-note
+**Información:** Todos los gráficos presentados a continuación incluyen una pestaña **"Datos Fuente"** donde podrá descargar la información en formato Excel.
+:::
+
+Este informe analiza un total de **`r nrow(data_processed)`** documentos científicos publicados hasta el año **2025**, que abarcan aspectos sobre la promoción de estilos de vida saludables y son publicados por al menos un autor que tiene filiación en Perú.
+
+# Evolución Temporal
+
+::: panel-tabset
+## Gráfico
+
+```{r}
+#| label: fig-trend
+p1 <- ggplot(trend_data, aes(x = year, y = n)) +
+  geom_area(fill = "#e3f2fd", alpha = 0.5) +
+  geom_line(color = "#1565c0", size = 1) +
+  geom_point(aes(text = paste("Año:", year, "<br>Docs:", n, "<br>Var:", growth)), 
+             color = "#0d47a1", size = 2) +
+  theme_minimal() + labs(x = "Año", y = "Documentos")
+
+ggplotly(p1, tooltip = "text")
+```
+
+## Datos Fuente
+
+```{r}
+make_download_table(trend_data, "tendencia_anual")
+```
+:::
+
+# Distribución Geográfica
+
+::: panel-tabset
+## Mapa Mundial
+
+```{r}
+#| label: fig-map
+#| fig-height: 8
+
+g_geo <- list(showframe = FALSE, showcoastlines = TRUE, projection = list(type = 'mercator'))
+
+plot_ly(map_data, 
+        type = 'choropleth', 
+        locations = ~countries_iso, 
+        z = ~documents, 
+        text = ~country_name, 
+        colorscale = 'Viridis',
+        marker = list(line = list(color = toRGB("white"), width = 0.5)),
+        colorbar = list(title = 'N° Docs')) %>%
+  layout(geo = g_geo, margin = list(l=0, r=0, t=0, b=0))
+```
+
+## Datos Fuente
+
+```{r}
+make_download_table(map_data, "produccion_por_pais")
+```
+:::
+
+# Análisis de Fuentes y Tipología
+
+## Top Revistas de Publicación
+
+::: panel-tabset
+### Gráfico
+
+```{r}
+#| label: fig-sources
+#| fig-height: 6
+
+p_source <- ggplot(source_data, aes(x = reorder(source_title, n), y = n)) +
+  geom_col(fill = "#2c3e50", width = 0.7) + 
+  coord_flip() + 
+  theme_minimal() + 
+  labs(x="", y="Cantidad de Documentos") +
+  theme(axis.text.y = element_text(size = 10))
+
+ggplotly(p_source)
+```
+
+### Datos Fuente
+
+```{r}
+make_download_table(source_data, "top_revistas")
+```
+:::
+
+<br>
+
+## Distribución por Tipo de Documento
+
+::: panel-tabset
+### Gráfico
+
+```{r}
+#| label: fig-types
+#| fig-height: 5
+
+p_type <- ggplot(type_data, aes(x = reorder(type_es, n), y = n, fill = type_es)) +
+  geom_col(width = 0.6) + 
+  coord_flip() + 
+  theme_minimal() + 
+  theme(legend.position = "none") + # SIN LEYENDA
+  labs(x="", y="Cantidad de Documentos")
+
+ggplotly(p_type, tooltip = c("x", "y"))
+```
+
+### Datos Fuente
+
+```{r}
+make_download_table(type_data, "tipos_documento")
+```
+:::
+
+# Colaboración y Financiamiento
+
+::::: {layout-ncol="2"}
+::: panel-tabset
+## Gráfico Colaboración
+
+```{r}
+plot_ly(collab_data, labels = ~collab_type, values = ~n, type = 'pie',
+        marker = list(colors = c('#e74c3c', '#95a5a6'))) %>% 
+  layout(showlegend = F)
+```
+
+## Datos Fuente
+
+```{r}
+make_download_table(collab_data, "colaboracion")
+```
+:::
+
+::: panel-tabset
+## Gráfico Financiamiento
+
+```{r}
+# Visualización basada en funding_texts
+plot_ly(fund_data, labels = ~status, values = ~n, type = 'pie', hole = 0.4,
+        marker = list(colors = c('#27ae60', '#ecf0f1'))) %>% 
+  layout(showlegend = F)
+```
+
+## Datos Fuente
+
+```{r}
+make_download_table(fund_data, "financiamiento")
+```
+:::
+:::::
+
+# Nube de Palabras
+
+::: panel-tabset
+## Visualización
+
+```{r}
+#| label: fig-cloud
+wordcloud2(keywords_df, size = 0.6, color = "random-dark")
+```
+
+## Datos Fuente
+
+```{r}
+make_download_table(keywords_df, "palabras_clave")
+```
+:::
+
+# Base de Datos Completa
+
+A continuación puede consultar y descargar todos los registros procesados.
+
+```{r}
+# Selección de columnas principales para la tabla final
+final_display <- data_processed %>%
+  select(year, source_title, document_type, authors, title) 
+
+datatable(
+  final_display,
+  colnames = c("Año", "Revista", "Tipo", "Autores", "Título"),
+  filter = 'top',
+  extensions = 'Buttons',
+  options = list(
+    dom = 'Bfrtip',
+    buttons = c('csv', 'excel'),
+    pageLength = 10,
+    scrollX = TRUE,
+    language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')
+  )
+)
+```
